@@ -15,7 +15,6 @@ This creates a binary to run the program.
 
 ## Running
 
-Show an example run of your program, using at least two additional arguments, and what to expect
 To run the program, execute it from the command line specifying the commands to be executed:
 
 ```shell
@@ -30,6 +29,7 @@ For example:
 ```
 Expected Output: 
 The above  will take the output of the ls command and pipe it to the sort command. The expected output could be something like this: 
+
 Makefile
 pipe
 pipe.c
