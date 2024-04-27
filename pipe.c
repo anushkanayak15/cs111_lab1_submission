@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
     if (pipe(pipefd) == -1)
     {
         // fprintf(stderr, "Pipe creation failed\n");
-        return errno; // if pipe creation failed then give out the error code
+        exit(errno); // if pipe creation failed then give out the error code
     }
 
     // create a loop for multiple command execution
@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
         if (ret < 0) // fork created not successfully
         {
             // fprintf(stderr, "Fork failed\n");
-            return errno; // return error if fork creation fails
+            exit(errno); // return error if fork creation fails
         }
 
         if (ret == 0) // fork created successfully and is in the child process
@@ -55,14 +55,14 @@ int main(int argc, char *argv[])
                 // duplicates file descriptor for the write end of the pipe (pipefd[1]) onto the standard output file descriptor (STDOUT_FILENO)
                 {
                     // fprintf(stderr, "Duplication of file descriptor failed\n");
-                    return errno;
+                    exit(errno);
                 }
                 close(pipefd[1]); // Close write end of the pipe
             }
 
             execlp(argv[curr_i], argv[curr_i], NULL); // executes the current command
             // fprintf(stderr, "Execution of command failed\n");
-            return errno; //  if execlp fails then child process exits with an error code
+            exit(errno); //  if execlp fails then child process exits with an error code
         }
 
         else
@@ -81,14 +81,14 @@ int main(int argc, char *argv[])
                 if (dup2(pipefd[0], STDIN_FILENO) == -1) // duplicate file descriptor for the read end of the pipe (pipefd[0]) onto the standard input file descriptor (STDIN_FILENO)
                 {
                     // fprintf(stderr, "Duplication of file descriptor failed\n");
-                    return errno;
+                    exit(errno);
                 }
                 close(pipefd[0]); // Close read end of the pipe
 
                 if (pipe(pipefd) == -1) // create a new pipe successfully
                 {
                     // fprintf(stderr, "Pipe creation failed\n");
-                    return errno;
+                    exit(errno);
                 }
             }
         }
